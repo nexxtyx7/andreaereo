@@ -1,0 +1,24 @@
+# André Aéreas — site demonstrativo
+
+Este projeto é um protótipo estático e responsivo, pensado para abrir sem VS Code, sem terminal e sem instalar dependências.
+
+## Como abrir
+1. Extraia o arquivo ZIP.
+2. Abra a pasta `andre_aereas_site`.
+3. Toque/clique duas vezes em `index.html` para abrir no navegador.
+
+## Inclui
+- Página inicial premium com aeronave vetorial estilizada e animação CSS.
+- Layout responsivo para celular, tablet e computador.
+- Busca demonstrativa de voos com ida e volta, somente ida e modo de múltiplos destinos (este último com rota inicial demonstrativa).
+- Validação de origem, destino e datas.
+- Resultados ilustrativos com filtros de preço/duração e escalas.
+- Destinos com seleção para o formulário.
+- WhatsApp com mensagem inicial e Instagram oficial.
+- Menu mobile, preferência por movimento reduzido, foco de teclado e aviso explícito de demonstração.
+
+## Importante
+Voos, horários, preços e tarifas são fictícios. Não existe integração com inventário de voos, reservas, pagamentos, check-in ou backend. O endereço de e-mail ainda não foi configurado. As imagens de destinos são carregadas de Unsplash e as fontes de Google Fonts, então esses elementos precisam de internet; a estrutura principal do site permanece disponível sem elas.
+
+## Contatos centralizados
+O objeto `CONTACTS` no início de `app.js` concentra os links e a mensagem do WhatsApp. O Instagram está configurado com o link fornecido.
