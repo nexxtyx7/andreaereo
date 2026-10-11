@@ -300,7 +300,7 @@
         toast('Você entrou na sua conta.');
         setTimeout(closeAuth, 900);
       } else if (authMode === 'signup') {
-        setMessage('Cadastro realizado com sucesso.');
+        setMessage('Conta criada com sucesso!');
       } else if (authMode === 'recovery') {
         setMessage('Se esse e-mail estiver cadastrado, você receberá um link para redefinir a senha. Confira também o spam.');
       } else {
