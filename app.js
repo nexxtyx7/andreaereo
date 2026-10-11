@@ -113,13 +113,36 @@
   $('#stops-filter')?.addEventListener('change', renderFlights);
 
   const modal = $('#results-modal');
+  const flightLoaderStyle = document.createElement('style');
+  flightLoaderStyle.textContent = `
+    .flight-loading-overlay{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(4,16,32,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:1;visibility:visible;transition:opacity .2s ease,visibility .2s ease}
+    .flight-loading-overlay[hidden]{display:none!important}
+    .flight-loading-card{display:flex;flex-direction:column;align-items:center;gap:17px;width:min(100%,320px);padding:34px 28px;border:1px solid rgba(120,215,255,.22);border-radius:22px;background:linear-gradient(145deg,#102b49,#071629);color:#fff;text-align:center;box-shadow:0 24px 80px #0005}
+    .flight-loading-spinner{width:54px;height:54px;border:4px solid rgba(120,215,255,.2);border-top-color:#78d7ff;border-right-color:#fff;border-radius:50%;animation:flight-spin .8s linear infinite}
+    .flight-loading-title{margin:0;font:800 20px/1.25 Manrope, sans-serif;letter-spacing:-.4px}
+    .flight-loading-copy{margin:0;color:#c5d4e4;font:500 13px/1.6 'DM Sans',sans-serif}
+    .flight-loading-caption{color:#78d7ff;font:700 10px/1.4 'DM Sans',sans-serif;letter-spacing:2px;text-transform:uppercase}
+    @keyframes flight-spin{to{transform:rotate(360deg)}}
+    @media(prefers-reduced-motion:reduce){.flight-loading-spinner{animation-duration:1.8s}}
+  `;
+  document.head.appendChild(flightLoaderStyle);
+  const flightLoader = document.createElement('div');
+  flightLoader.className = 'flight-loading-overlay';
+  flightLoader.hidden = true;
+  flightLoader.setAttribute('role', 'status');
+  flightLoader.setAttribute('aria-live', 'polite');
+  flightLoader.innerHTML = '<div class="flight-loading-card"><div class="flight-loading-spinner" aria-hidden="true"></div><p class="flight-loading-caption">André Aéreas · AA/01</p><h2 class="flight-loading-title">Buscando voos...</h2><p class="flight-loading-copy">Estamos preparando as opções para sua próxima viagem.</p></div>';
+  document.body.appendChild(flightLoader);
+
   function closeResults() {
     modal?.classList.remove('open');
     modal?.setAttribute('aria-hidden', 'true');
   }
-  $$('[data-close]').forEach(button => button.addEventListener('click', closeResults));
-  $('#flight-form')?.addEventListener('submit', event => {
+  $('[data-close]').forEach(button => button.addEventListener('click', closeResults));
+  $('#flight-form')?.addEventListener('submit', async event => {
     event.preventDefault();
+    const form = event.currentTarget;
+    const submitButton = $('button[type="submit"]', form);
     const origin = $('#origin')?.value.trim();
     const destination = $('#destination')?.value.trim();
     const departure = $('#departure')?.value;
@@ -132,11 +155,30 @@
       toast('Confira as datas da viagem.');
       return;
     }
-    const route = $('#results-route');
-    if (route) route.textContent = origin + '  →  ' + destination + ' · ' + departure + (tripType === 'round' ? ' · volta ' + ret : '') + ' · ' + $('#passengers').value + ' passageiro(s) · ' + $('#cabin').value;
-    renderFlights();
-    modal?.classList.add('open');
-    modal?.setAttribute('aria-hidden', 'false');
+
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.setAttribute('aria-busy', 'true');
+    }
+    flightLoader.hidden = false;
+    document.body.style.overflow = 'hidden';
+    try {
+      const route = $('#results-route');
+      if (route) route.textContent = origin + '  →  ' + destination + ' · ' + departure + (tripType === 'round' ? ' · volta ' + ret : '') + ' · ' + $('#passengers').value + ' passageiro(s) · ' + $('#cabin').value;
+
+      // A busca é demonstrativa; este pequeno intervalo permite que a animação seja vista.
+      await new Promise(resolve => setTimeout(resolve, 900));
+      renderFlights();
+      modal?.classList.add('open');
+      modal?.setAttribute('aria-hidden', 'false');
+    } finally {
+      flightLoader.hidden = true;
+      document.body.style.overflow = '';
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.removeAttribute('aria-busy');
+      }
+    }
   });
   $$('.destination-card').forEach(card => card.addEventListener('click', () => {
     const destination = card.dataset.destination;
