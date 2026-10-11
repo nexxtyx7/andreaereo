@@ -157,9 +157,10 @@
     @media(max-width:700px){.site-header .header-actions{gap:8px}.account-trigger{padding:8px 10px;font-size:12px}.desktop-nav.mobile-open{display:flex;position:absolute;top:100%;left:0;right:0;z-index:100;background:#071629;padding:18px;flex-direction:column;gap:16px}}
   `;
   document.head.appendChild(authStyle);
+  let accountButton = null;
   const headerActions = $('.header-actions');
   if (headerActions) {
-    const accountButton = document.createElement('button');
+    accountButton = document.createElement('button');
     accountButton.className = 'account-trigger';
     accountButton.type = 'button';
     accountButton.textContent = 'Minha conta';
