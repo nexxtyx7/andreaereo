@@ -267,9 +267,9 @@
     };
     [authTitle.textContent, authDescription.textContent] = titles[authMode] || titles.login;
     const emailField = '<label>E-mail<input name="email" type="email" autocomplete="email" required maxlength="254" placeholder="voce@exemplo.com"></label>';
-    const passwordField = '<label>Senha<input name="password" type="password" autocomplete="' + (authMode === 'signup' ? 'new-password' : 'current-password') + '" minlength="8" required placeholder="Mínimo de 8 caracteres"></label>';
+    const passwordField = '<label>Senha<input name="password" type="password" autocomplete="' + (authMode === 'signup' ? 'new-password' : 'current-password') + '" minlength="8"' + (authMode === 'signup' ? ' maxlength="8"' : '') + ' required placeholder="Digite 8 caracteres"></label>';
     let fields = emailField + (authMode === 'login' || authMode === 'signup' ? passwordField : '');
-    if (authMode === 'update') fields = '<label>Nova senha<input name="password" type="password" autocomplete="new-password" minlength="8" required placeholder="Mínimo de 8 caracteres"></label>';
+    if (authMode === 'update') fields = '<label>Nova senha<input name="password" type="password" autocomplete="new-password" minlength="8" maxlength="8" required placeholder="Digite 8 caracteres"></label>';
     authContent.innerHTML = '<form id="auth-form">' + fields + '<button class="auth-submit" type="submit">' + ({login:'Entrar',signup:'Criar conta',recovery:'Enviar link de recuperação',update:'Salvar nova senha'}[authMode] || 'Continuar') + '</button></form>' +
       '<div class="auth-links">' +
       (authMode !== 'login' && authMode !== 'update' ? '<button type="button" data-auth="login">Já tenho conta</button>' : '') +
@@ -300,7 +300,7 @@
         toast('Você entrou na sua conta.');
         setTimeout(closeAuth, 900);
       } else if (authMode === 'signup') {
-        setMessage('Cadastro enviado. Confira seu e-mail para confirmar a conta, se a confirmação estiver ativada.');
+        setMessage('Cadastro realizado com sucesso.');
       } else if (authMode === 'recovery') {
         setMessage('Se esse e-mail estiver cadastrado, você receberá um link para redefinir a senha. Confira também o spam.');
       } else {
