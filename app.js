@@ -10,8 +10,8 @@
     whatsapp: 'https://wa.me/553591793515',
     instagram: 'https://www.instagram.com/andre_aereas?psln=anN1OXIyd2J1ZnN3'
   };
-  const SUPABASE_URL = 'COLE_AQUI_A_URL_DO_PROJETO_SUPABASE';
-  const SUPABASE_ANON_KEY = 'COLE_AQUI_A_CHAVE_ANON_PUBLICA_DO_SUPABASE';
+  const SUPABASE_URL = 'https://dbpzhcfscgdngdykepcy.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_AnTYz37axiEDXBRoaj3A-Q_zE5OeuoI';
   const authConfigured = /^https:\/\//.test(SUPABASE_URL) &&
     !SUPABASE_URL.includes('COLE_AQUI') && !SUPABASE_ANON_KEY.includes('COLE_AQUI');
 
